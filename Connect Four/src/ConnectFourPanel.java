@@ -90,7 +90,12 @@ public class ConnectFourPanel extends JPanel implements MouseListener{
 		}
 		// Display a message if either red or blue has won the game.
 		g2.setFont(new Font("Verdana", 0, 40));
-		
+		if (checkWinner()) {
+
+			String playerColor = (turn == 1) ? "Blue" : "Red";
+			System.out.print("Congrats " + playerColor + " Player, you won!");
+			System.exit(0);
+		}
 		
 	}
 	
@@ -164,13 +169,18 @@ public class ConnectFourPanel extends JPanel implements MouseListener{
 	// if anybody has won, switch who's turn it is and then repaint the board.  Also, you shouldn't allow anything to happen
 	// if either player has won.
 	public void mouseClicked(MouseEvent e) {	
-		System.out.println("mouse clicked x-value = " + e.getX() + " y-value = " + e.getY());
-		if(addPiece(e.getX()/100)) 
-			turn = -turn;
-		if(!checkWinner())
+		//System.out.println("mouse clicked x-value = " + e.getX() + " y-value = " + e.getY());
+		if(addPiece(e.getX()/100)) {
 			this.repaint();
-		if(checkWinner())
-			System.out.println("YEAHHHH BOIIIIIII");
+			turn = -turn;
+		}
+			
+		// if(!checkWinner())
+		// 	this.repaint();
+		// if(checkWinner()) {
+		// 	int playerNum = (turn == 1) ? 1 : 2;
+		// 	System.out.print("Congrats Player " + playerNum + " you won!");
+		// }
 		
 	}
 

@@ -112,7 +112,7 @@ public class TicTacToePanel extends JPanel implements MouseListener{
 	// switch who's turn it is and then repaint the board.  Also, you shouldn't allow anything to happen
 	// if x or o has won.
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("mouse clicked x-value = " + e.getX() + " y-value = " + e.getY());
+		//System.out.println("mouse clicked x-value = " + e.getX() + " y-value = " + e.getY());
 		if(board[e.getX()/100][e.getY()/100] == 0 && !checkWinner()) {
 			board[e.getX()/100][e.getY()/100] = turn;
 			turn = -turn;
