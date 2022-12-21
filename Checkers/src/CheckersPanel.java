@@ -65,10 +65,10 @@ public class CheckersPanel extends JPanel implements MouseListener{
 				if((i+j)%2 == 0) {
 					g2.setColor(Color.DARK_GRAY);
 					g2.fillRect(i*100, j*100, 100, 100);
-					System.out.println("HAWWW");
+					//System.out.println("HAWWW");
 				}
 				else {
-					System.out.println("YEEEE");
+					//System.out.println("YEEEE");
 					g2.setColor(Color.WHITE);
 					g2.fillRect(i*100, j*100, 100, 100);
 				}
@@ -106,7 +106,9 @@ public class CheckersPanel extends JPanel implements MouseListener{
 		// through your two-dimensional array and paint blue checkers where ever there is -1 and 
 		// a red checker wherever there is 1 in the array.
 		g2.setColor(Color.YELLOW);
-		if((from.getColumn()+from.getRow())%2 == 0 && board[from.getRow()][from.getColumn()] == turn)
+		//if((from.getColumn()+from.getRow())%2 == 0 && board[from.getRow()][from.getColumn()] == turn)
+
+		if(board[from.getRow()][from.getColumn()] == turn || board[from.getRow()][from.getColumn()] == 2 * turn)
 			g2.fillRect(from.getColumn()*100, from.getRow()*100, 100, 100);
 		for(int r = 0; r < board.length; r++){
 			for(int c = 0; c < board[0].length; c++){
@@ -178,7 +180,7 @@ public class CheckersPanel extends JPanel implements MouseListener{
 		return false;
 	}
 	public boolean doubleJump() {
-		System.out.println(board[from.getRow()][from.getColumn()]+ " = " + -turn);
+		//System.out.println(board[from.getRow()][from.getColumn()]+ " = " + -turn);
 		if(board[from.getRow()][from.getColumn()] == -turn && (board[to.getRow()][to.getColumn()] == 0 && (to.getRow()+to.getColumn())%2 == 0
 				&& to.getColumn()-from.getColumn() == 2 && to.getRow()-from.getRow() == 2*turn && (board[from.getRow()+turn][from.getColumn()+1] == turn) || 
 				(board[from.getRow()+turn][from.getColumn()+1] == turn*2)))
@@ -243,31 +245,31 @@ public class CheckersPanel extends JPanel implements MouseListener{
 	// if anybody has won, switch who's turn it is and then repaint the board.  Also, you shouldn't allow anything to happen
 	// if either player has won.
 	public void mouseClicked(MouseEvent e) {	
-		System.out.println("mouse clicked x-value = " + e.getX() + " y-value = " + e.getY());
-		for(int i = 0; i<board.length; i++) {
-			for(int j = 0; j<board[i].length; j++)
-				System.out.print(board[i][j] + " ");
-			System.out.println();
-		}
-		System.out.println(turn);
-		System.out.println(board[e.getX()/100][e.getY()/100]);
+		//System.out.println("mouse clicked x-value = " + e.getX() + " y-value = " + e.getY());
+		//for(int i = 0; i<board.length; i++) {
+			//for(int j = 0; j<board[i].length; j++)
+				//System.out.print(board[i][j] + " ");
+			//System.out.println();
+		//}
+		//System.out.println(turn);
+		//System.out.println(board[e.getX()/100][e.getY()/100]);
 		//Sets what piece is being moved if the player clicks their own piece
 		if(board[e.getY()/100][e.getX()/100] == turn || board[e.getY()/100][e.getX()/100] == 2*turn) {
 			from.setRow(e.getY()/100);
 			from.setColumn(e.getX()/100);
-			System.out.println("Setting 'from' to last click");
+			//System.out.println("Setting 'from' to last click");
 
 		}
 		//Sets where the piece is going if player clicks on an empty space
 		else {
 			to.setRow(e.getY()/100);
 			to.setColumn(e.getX()/100);
-			System.out.println("Setting 'to' to last click");
+			//System.out.println("Setting 'to' to last click");
 		}
-		System.out.println(from.getRow());
-		System.out.println(to.getRow());
-		System.out.println(from.getColumn());
-		System.out.println(to.getColumn());
+		//System.out.println(from.getRow());
+		//System.out.println(to.getRow());
+		//System.out.println(from.getColumn());
+		//System.out.println(to.getColumn());
 		//Checks to make sure pieces are going where they're allowed
 		if(doubleJump()) {
 			board[from.getRow()][from.getColumn()] = 0;
@@ -275,7 +277,7 @@ public class CheckersPanel extends JPanel implements MouseListener{
 			board[from.getRow()+turn][(from.getColumn()+ ((to.getColumn()-from.getColumn())/2))] = 0;
 			from.setRow(to.getRow());
 			from.setColumn(to.getColumn());
-			System.out.println("ur insane");
+			//System.out.println("ur insane");
 		}
 		
 		else if(legalSpot() && jumpPiece()){
@@ -285,14 +287,14 @@ public class CheckersPanel extends JPanel implements MouseListener{
 			turn = -turn;
 			from.setRow(to.getRow());
 			from.setColumn(to.getColumn());
-			System.out.println("Eighth");
+			//System.out.println("Eighth");
 			
 		}
 		//Moves the piece (from) from (to) to
 		else if(legalSpot() && normalMove()){
 			board[from.getRow()][from.getColumn()] = 0;
 			board[to.getRow()][to.getColumn()] = turn;
-			System.out.println("Fifth");
+			//System.out.println("Fifth");
 			turn = -turn;
 
 		}
@@ -307,7 +309,7 @@ public class CheckersPanel extends JPanel implements MouseListener{
 			board[from.getRow()][from.getColumn()] = 0;
 			board[to.getRow()][to.getColumn()] = 2*turn;
 			turn = -turn;
-			System.out.println("YAY!");
+			//System.out.println("YAY!");
 		}
 		else if(kingLegalSpot() && kingJumpPiece()) {
 			board[from.getRow()][from.getColumn()] = 0;
@@ -315,8 +317,8 @@ public class CheckersPanel extends JPanel implements MouseListener{
 			board[from.getRow() + (to.getRow()-from.getRow())/2][from.getColumn() + (to.getColumn()-from.getColumn())/2] = 0;
 			from.setRow(to.getRow());
 			from.setColumn(to.getColumn());
-			System.out.println(from.getRow());
-			System.out.println(from.getColumn());
+			//System.out.println(from.getRow());
+			//System.out.println(from.getColumn());
 			turn = -turn;
 		}
 			

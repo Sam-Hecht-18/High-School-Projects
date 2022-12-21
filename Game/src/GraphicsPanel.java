@@ -37,6 +37,7 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 	private int index;
 	private boolean[] key;
 	public boolean start;
+	private boolean isBig;
 	private ImageIcon keyPic;
 	private ImageIcon ballUp;
 	private ImageIcon ballDown;
@@ -73,10 +74,9 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 	public GraphicsPanel(){
 
 
-
 		setPreferredSize(new Dimension(1024,576));    
 
-		t = new Timer(1, new ClockListener(this));   
+		t = new Timer(2, new ClockListener(this));   
 
 		this.setFocusable(true);					 
 		this.addKeyListener(this);
@@ -159,6 +159,7 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 		hintCount = 0;
 		oldHintCount = 0;
 		difficulty = 1;
+		isBig = true;
 	}
 
 
@@ -403,7 +404,11 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 			if(key[6]) {
 				for(int i = 0; i<11; i++) 
 					g2.fill(flashingLights[i]);
-				p1.goBig();
+				if (!isBig) {
+					p1.goBig();
+					t.setDelay(2);
+					isBig = true;
+				}
 			}
 
 
@@ -445,8 +450,8 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 
 				else if(count%1000 == 250 && count<10000) {
 					if(boss.getImageNum()>=12)
-						boss2.teleport(p1);
-					boss.teleport(p1);
+						boss2.teleport(p1, false);
+					boss.teleport(p1, false);
 				}
 				else if(count%4 == 0 && count<10000) {
 					g2.setColor(Color.GREEN);
@@ -459,9 +464,9 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 					}
 				}
 				else if(count == 10250) {
-					boss.teleport(p1);
+					boss.teleport(p1, true);
 					if(boss.getImageNum()>=12)
-						boss2.teleport(p1);
+						boss2.teleport(p1, true);
 				}
 				else if(count > 10250 && count<11250 && count%4 == 0) {
 					g2.setColor(Color.MAGENTA);
@@ -470,7 +475,7 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 
 				}
 
-				else if(shooting && count<11250) {
+				else if(shooting && count > 10250 && count<11250) {
 					g2.setColor(Color.BLUE);
 					p1.Dead();
 					for(Rectangle r : p1.getLasers())
@@ -578,7 +583,8 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 		switch(e.getKeyCode()){
 		//This case deals specifically with getting hints
 		case KeyEvent.VK_SLASH:
-			if(screens.getIndex() != 8 && screens.getIndex() != 0 && hints[screens.getIndex()].length > hintIndexes[screens.getIndex()])
+			if(screens.getIndex() != 9 && screens.getIndex() != 8 
+				&& screens.getIndex() != 0 && hints[screens.getIndex()].length > hintIndexes[screens.getIndex()])
 				hintCount++;
 			if(screens.getIndex() == 8 && hintIndexes[8] >= 2 && hintIndexes[8]<=5) {
 				boss2.nextPhase();
@@ -591,7 +597,7 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 				imageURL = cldr.getResource(imagePath);
 				boss.setImage(new ImageIcon(imageURL));
 			}
-			if(hints[screens.getIndex()].length > hintIndexes[screens.getIndex()])
+			if(screens.getIndex() != 9 && hints[screens.getIndex()].length > hintIndexes[screens.getIndex()])
 				hintIndexes[screens.getIndex()]++;
 			break;
 			//This case has to do with the movement of the player
@@ -665,8 +671,11 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 				}
 				break;
 			case 6:
-				if(p1.getBounds().intersects(new Rectangle(480, 400, 80, 64)))
+				if(p1.getBounds().intersects(new Rectangle(480, 400, 80, 64))) {
 					p1.goSmall();
+					t.setDelay(4);
+					isBig = false;
+				}
 				if(!key[6] && index < flashingLights.length && p1.getSmallBounds().intersects(flashingLights[index])) 
 					index++;
 				else
@@ -678,8 +687,9 @@ public class GraphicsPanel extends JPanel implements KeyListener{
 					screens.nextScreen("images/buttonDown.png");
 					start = true;
 				}
-				else if(count>7750)
+				else if(count>10250) {
 					shooting = true;
+				}
 
 				break;
 
