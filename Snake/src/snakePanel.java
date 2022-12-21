@@ -99,7 +99,7 @@ public class snakePanel extends JPanel implements KeyListener{
 				if(dot.getLocal().equals(heads.get(i).getLocal()) && reset)
 					dot.reset();
 			}
-			System.out.print(1);
+			//System.out.print(1);
 			if(addCount == 1) {
 				reset = true;
 				dot.reset();
